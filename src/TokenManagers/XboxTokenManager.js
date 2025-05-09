@@ -19,11 +19,13 @@ const checkIfValid = (expires) => {
 // Manages Xbox Live tokens for xboxlive.com
 class XboxTokenManager {
   constructor (ecKey, cache) {
-    this.key = ecKey
-    this.jwk = { ...ecKey.publicKey.export({ format: 'jwk' }), alg: 'ES256', use: 'sig' }
-    this.cache = cache
-
-    this.headers = { 'Cache-Control': 'no-store, must-revalidate, no-cache', 'x-xbl-contract-version': 1 }
+    this.key = ecKey;
+    const cryptoKey = this.key.publicKey.export({ type: 'spki', format: 'der' });
+    exportJWK(cryptoKey).then(jwk => {
+      this.jwk = { ...jwk, alg: 'ES256', use: 'sig' };
+    });
+    this.cache = cache;
+    this.headers = { 'Cache-Control': 'no-store, must-revalidate, no-cache', 'x-xbl-contract-version': 1 };
   }
 
   async setCachedToken (data) {
