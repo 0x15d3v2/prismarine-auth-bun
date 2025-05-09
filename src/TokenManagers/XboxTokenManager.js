@@ -3,7 +3,7 @@ const crypto = require('crypto')
 const XboxLiveAuth = require('@xboxreplay/xboxlive-auth')
 const debug = require('debug')('prismarine-auth')
 const { SmartBuffer } = require('smart-buffer')
-
+const { exportJWK } = require('jose')
 const { Endpoints, xboxLiveErrors } = require('../common/Constants')
 const { checkStatus, createHash } = require('../common/Util')
 
